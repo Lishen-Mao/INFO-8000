@@ -60,3 +60,40 @@ ggplot(data = mpg) +
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy)) +
   facet_wrap(~ cyl, nrow=1)
+
+
+#3.6 Geometric objects
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy))
+#test to see if I can change line color to red in smooth plot.
+ggplot(data = mpg) +
+  geom_smooth(mapping = aes(x = displ, y = hwy), color = "red")
+#linetype acts like size, color, shape in point plot
+#it draws a different line, with a different linetype, for each unique value of the variable that you map to linetype.
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy, linetype = drv))
+#display multiple geoms in the same plot.
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+#pass a set of mappings to ggplot(), also compare the following two statements
+ggplot(data = mpg, mapping = aes (x= displ, y = hwy)) + geom_point() +geom_smooth()
+ggplot(mpg, aes(displ, hwy)) + geom_point() + geom_smooth()
+#display different aesthetics in different layers. local mapping setting can be used to overwrite global setting.
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
+  geom_point(mapping = aes(color = class)) +
+  geom_smooth()
+#another examples of local argument overwrites the global setting
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point(mapping = aes(color = class)) + 
+  geom_smooth(data = filter(mpg, class == "subcompact"), se = FALSE)
+
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
+  geom_point() + 
+  geom_smooth(se = FALSE)
+
+#Exercise
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point()+
+  geom_smooth(mapping =aes(group = drv), se = FALSE)
+
