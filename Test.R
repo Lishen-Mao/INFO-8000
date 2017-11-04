@@ -108,3 +108,32 @@ ggplot(data = mpg) +
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy, color = drv))+
   geom_smooth(mapping =aes(x = displ, y = hwy), se = FALSE)
+
+#move to bar chart, diamond dataset.
+ggplot(data = diamonds) +
+  geom_bar(mapping = aes(x = cut))
+?geom_bar
+
+demo <- tribble(
+  ~cut,         ~freq,
+  "Fair",       1610,
+  "Good",       4906,
+  "Very Good",  12082,
+  "Premium",    13791,
+  "Ideal",      21551
+)
+
+ggplot(data = demo) +
+  geom_col(mapping = aes(x = cut, y = freq))
+
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = clarity))
+
+ggplot(data = diamonds, mapping = aes(x = cut, fill = clarity)) + 
+  geom_bar(alpha = 1/5, position = "identity")
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = clarity), position = "fill")
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = clarity), position = "dodge")
+ggplot(data=mpg)+
+  geom_jitter(mapping= aes(x=displ, y=hwy))
