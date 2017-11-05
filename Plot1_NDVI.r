@@ -15,3 +15,8 @@ MarshSR$NDVI <- ((MarshSR$band2-MarshSR$band1)/(MarshSR$band2+MarshSR$band1))
 BSSWNDVI<-subset(MarshSR, pixel == "SW" & site == "BS")
 #Filter the data in my MarshSR dataset where pixel equals 'SE' and site equals 'BS', and copy these data to a new variable
 BSSENDVI<-subset(MarshSR, pixel == "SE" & site == "BS")
+
+##put date on the x-axis and NDVI on the y-axis:
+ggplot(data=BSSENDVI) + 
+  geom_line(mapping = aes(x = date, y = NDVI, group = 1)) +
+  labs(x = "2015 to 2016", y = "NDVI", title = "NDVI value in SW and SE pixels of Bayou Sauvage National wildlife refuge")
