@@ -26,13 +26,9 @@ ggplot(data=BSSENDVI) +
 #mean NDVI 
 meanNDVI <- mean ((BSSENDVI$NDVI+BSSWNDVI$NDVI)/2)
 
-###put date on the x-axis and NDVI on the y-axis, point graph
-ggplot(data=BSSENDVI) + 
-  geom_point(mapping = aes(x = date, y = NDVI, group = 1), color = rgb(0,0,0, alpha = 0.2))+
-  geom_point(data = BSSWNDVI, mapping = aes(x = date, y = NDVI, group = 1), color = rgb(0,0,1, alpha = 0.3)) +
+##put date on the x-axis and NDVI on the y-axis, point graph
+ggplot() + 
+  geom_point(data = BSSENDVI, mapping = aes(x = date, y = NDVI, color = "SE pixel"))+
+  geom_point(data = BSSWNDVI, mapping = aes(x = date, y = NDVI, color = "SW pixel")) +
   labs(x = "2015 to 2016", y = "NDVI", title = "SW and SE pixel NDVI value in Bayou Sauvage National wildlife refuge")+
   geom_hline(yintercept = meanNDVI)
-
-
-
-abline(h=meanNDVI)
