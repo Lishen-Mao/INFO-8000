@@ -1,0 +1,52 @@
+---
+title: "INFO 8000 Assignment 3"
+output: html_notebook
+Author: Lishen Mao
+Date: "November 5, 2017"
+runtime: shiny
+---
+
+---
+Object: Using the 2 Bayou Sauvage pixel locations to calculate NDVI for each of the 2 pixels (SW -89.78206	30.109375
+, SE-89.779652	30.109375) from 2015-2016. I want to see if there is a difference in the indices since our team is assuming the pixels are the same. Based on two plots of NDVI, I know for sure the NDVI distribution and value range is almost the same for the 2 Bayou Sauvage pixel from 2015 to 2016. The future application is we can build an eddy flux tower on eith one of these pixel locations.
+
+---
+```{r}
+#Load necessary library
+library(dplyr);
+library(tidyverse)
+
+#Set working directory to my flashdrive
+setwd("D:/Marsh data/")
+#MarshSR means "Marsh surface reflectance", read the data from my csv file into 'MarshSR'.
+MarshSR<-read.csv("modis500m_gulfcoast_processed.csv")
+
+#Create a new column 'NDVI' and Calculate its value for each row in MarshSR dataset.
+MarshSR$NDVI <- ((MarshSR$band2-MarshSR$band1)/(MarshSR$band2+MarshSR$band1))
+
+#Filter the data in my MarshSR dataset where pixel equals 'SW' and site equals 'BS', and copy these data to a new variable
+BSSWNDVI<-subset(MarshSR, pixel == "SW" & site == "BS")
+#Filter the data in my MarshSR dataset where pixel equals 'SE' and site equals 'BS', and copy these data to a new variable
+BSSENDVI<-subset(MarshSR, pixel == "SE" & site == "BS")
+ggplot(data=BSSENDVI) + 
+  geom_line(mapping = aes(x = date, y = NDVI, group = 1), color = rgb(0,0,0, alpha = 0.2))+
+  geom_line(data = BSSWNDVI, mapping = aes(x = date, y = NDVI, group = 1), color = rgb(0,0,1, alpha = 0.3)) +
+  labs(x = "2015 to 2016", y = "NDVI", title = "SW and SE pixel NDVI value in Bayou Sauvage National wildlife refuge")
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+```{r}
+#mean NDVI 
+meanNDVI <- mean ((BSSENDVI$NDVI+BSSWNDVI$NDVI)/2)
+
+##put date on the x-axis and NDVI on the y-axis, point graph
+ggplot() + 
+  geom_point(data = BSSENDVI, mapping = aes(x = date, y = NDVI, color = "SE pixel"))+
+  geom_point(data = BSSWNDVI, mapping = aes(x = date, y = NDVI, color = "SW pixel")) +
+  labs(x = "2015 to 2016", y = "NDVI", title = "SW and SE pixel NDVI value in Bayou Sauvage National wildlife refuge")+
+  geom_hline(yintercept = meanNDVI)
+
+```
+
+
